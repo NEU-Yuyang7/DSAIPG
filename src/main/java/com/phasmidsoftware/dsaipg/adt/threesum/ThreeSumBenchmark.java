@@ -103,23 +103,23 @@ public class ThreeSumBenchmark {
      *                     results of the benchmark.
      */
     private void benchmarkThreeSum(final String description, final Consumer<int[]> function, int n, final TimeLogger[] timeLoggers) {
-	if (description.equals("ThreeSumCubic") && n > 4000) return;
-	System.out.println("Benchmarking: " + description);
-	long totalMs = 0;
-	for (int i = 0; i < runs; i++) {
-		int[] arr = supplier.get();
-		Arrays.sort(arr);
-		Stopwatch stopwatch = new Stopwatch();
-		function.accept(arr);
-		long elapsedMs = stopwatch.lap();
-		totalMs += elapsedMs;
+		if (description.equals("ThreeSumCubic") && n > 4000) return;
+		System.out.println("Benchmarking: " + description);
+		long totalMs = 0;
+		for (int i = 0; i < runs; i++) {
+			int[] arr = supplier.get();
+			Arrays.sort(arr);
+			Stopwatch stopwatch = new Stopwatch();
+			function.accept(arr);
+			long elapsedMs = stopwatch.lap();
+			totalMs += elapsedMs;
+		}
+		double avgTimeMs = totalMs / (double) runs;
+		for (TimeLogger tl : timeLoggers) {
+			tl.log(description, avgTimeMs, n);
+		}
+		System.out.printf("%s (N=%d): %.4f ms (avg over %d runs)%n", description, n, avgTimeMs, runs);
 	}
-	double avgTimeMs = totalMs / (double) runs;
-	for (TimeLogger tl : timeLoggers) {
-		tl.log(description, avgTimeMs, n);
-	}
-	System.out.printf("%s (N=%d): %.4f ms (avg over %d runs)%n", description, n, avgTimeMs, runs);
-}
 
 
 
